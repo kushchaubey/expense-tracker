@@ -1,16 +1,43 @@
 const express = require("express");
 const app = express();
 
+
+//Importing Dbs
+const sequelize = require("./Utils/Database");
+
+//Importing models
+const expenseModel = require("./models/ExpenseModel");
+const categoryModel = require("./models/CategoryModel");
+const userModel = require("./models/UserModel");
+
+//Importing routes
+const expensesRoutes = require("./routes/ExpenseRoutes");
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 
-app.get("/",(req,res,next)=>{
 
 
-    res.status(200).send({message:"cool work from me"});
 
-});
+
+app.use("/api",expensesRoutes);
+
+
+//Model associations
+userModel.hasMany(expenseModel);
+expenseModel.belongsTo(userModel);
+
+categoryModel.hasMany(expenseModel);
+expenseModel.belongsTo(categoryModel);
+
+
+//syncing of models with table.
+
+sequelize.sync()
+.then(result=>console.log(result))
+.catch(err=>console.log(err));
 
 app.listen(3000,()=>{
     console.log("server running on port 3000");
