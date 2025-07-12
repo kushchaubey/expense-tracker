@@ -1,9 +1,13 @@
+
+require('dotenv').config();
+
+
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("expense-tracker","root","Kush@123",{
+const sequelize = new Sequelize(process.env.DBNAME,process.env.DBUSERNAME,process.env.DBPASS,{
     host:"localhost",
     dialect:"mysql",
-    port:3307
+    port:process.env.PORT
 })
 
 module.exports = sequelize;
