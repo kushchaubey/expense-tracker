@@ -15,7 +15,6 @@ const userModel = require("./models/UserModel");
 
 //Importing routes
 const expensesRoutes = require("./routes/ExpenseRoutes");
-const { FORCE } = require("sequelize/lib/index-hints");
 
 
 app.use(express.json());

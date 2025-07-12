@@ -1,14 +1,7 @@
 
 
-const validation = require("../Utils/validation");
-
 exports.getAllExpensesByDate= (req,res,next)=>{
       
-    const {isValid, errors} = validation.validateDate(req.params.date)
-         if(!isValid){
-        return res.status(400).send({errorcode:400,message:errors});
-
-         }
 
     try{
         
@@ -24,12 +17,6 @@ exports.getAllExpensesByDate= (req,res,next)=>{
 
 exports.AddExpense = (req,res,next)=>{
 
-   const {isValid, errors} = validation(req.body)
-   if(!isValid){
-
-    return res.status(400).send({errorCode:400,message:errors});
-         
-        }
     try{
        res.status(200).send({data:req.body})
     }catch(err){

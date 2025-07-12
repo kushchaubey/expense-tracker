@@ -25,13 +25,31 @@ const validateExpenseFormData = (data) => {
   };
 };
 
-module.exports = validateExpenseFormData;
+module.exports.formValidation = validateExpenseFormData;
 
-module.exports.validateDate = (date)=>{
+module.exports.validateDate = (date,)=>{
     const errors = []
 
     if(!date || isNaN(Date.parse(date))){
       errors.push("invalid date format.")
+    }
+
+    return{
+        isValid: errors.length==0,
+        errors
+    }
+
+}
+
+module.exports.validateUSER = (userName,userPass)=>{
+    const errors = []
+
+    if(!userName || userName.trim().length < 2){
+      errors.push("UserName is invalid or less than charecter")
+    }
+    
+    if(!userPass || userPass.trim().length < 8){
+      errors.push("Password is invalid or less than 8 charecter")
     }
 
     return{
