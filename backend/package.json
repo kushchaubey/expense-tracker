@@ -1,0 +1,19 @@
+{
+  "name": "expense-tracker-rest",
+  "version": "1.0.0",
+  "description": "A REST API for tracking expenses by category and date. Includes analytics endpoints for summaries by category, item, and time (year, month, day).",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Expense",
+    "tracker",
+    "rest",
+    "api",
+    "expense",
+    "analytics"
+  ],
+  "author": "Vikas Chaubey",
+  "license": "ISC"
+}
