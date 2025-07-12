@@ -4,7 +4,7 @@ const sequelize = require("../Utils/Database");
 
 //User Model is created
 
-const userModel  = sequelize.define("expense",{
+const userModel  = sequelize.define("user",{
 
     id:{
         type:Sequelize.INTEGER,
