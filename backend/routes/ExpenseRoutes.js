@@ -6,7 +6,7 @@ const validationsMiddleware  = require("../middlewares/validationsMiddleware");
 
 const expensesController = require("../controllers/expenseController");
 
-routes.get("/:date",expensesController.getAllExpensesByDate);
+routes.get("/date/:date",expensesController.getAllExpensesByDate);
 
 routes.post("/expenses",validationsMiddleware.formValidationMiddleWare,expensesController.AddExpense)
 

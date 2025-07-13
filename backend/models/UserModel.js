@@ -1,6 +1,16 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../Utils/Database");
+const bcrypt = require('bcrypt');
+const saltRounds = 10; // You can adjust this value as needed
 
+const plainPassword = 'user_password';
+
+bcrypt.genSalt(saltRounds, function(err, salt) {
+    bcrypt.hash(plainPassword, salt, function(err, hash) {
+        if (err) throw err;
+        // Store the 'hash' in your database
+    });
+});
 
 //User Model is created
 
@@ -22,11 +32,7 @@ const userModel  = sequelize.define("user",{
     userPassword:{
         type:Sequelize.STRING,
         allowNull:false,
-        set(value) {
-      // Storing passwords in plaintext in the database is terrible.
-      // Hashing the value with an appropriate cryptographic hash function is better.
-         this.setDataValue('userPassword', hash(value));
-    },
+      
 
     },
 
