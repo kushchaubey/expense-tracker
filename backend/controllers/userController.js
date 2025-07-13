@@ -41,7 +41,7 @@ module.exports.getUserByID = (req,res,next)=>{
         if(result){
            return sendResponse(res,200,'user successfully retrieved',result)
         }else{
-            return sendResponse(res,400,'userNotfound',null)
+            return sendResponse(res,400,'user Not found',null)
 
         }
       }
@@ -87,13 +87,22 @@ module.exports.updateUser = (req,res,next)=>{
 
    const userData = req.body
 
-      userModel.update(
+
+   userModel.findOne({ where: { userName: userData.userName } })
+    .then(existingUser => {
+      if (existingUser && existingUser.id != req.params.id) {
+        return sendResponse(res, 409, "User already exists with this username", null);
+      }
+      // No existing user, create one
+      return  userModel.update(
         userData,
         {
             where: {
                 id: req.params.id,
          }
         })
+
+    })
       .then((result)=>{
         if(result){
            return sendResponse(res,201,'User Updated',result)

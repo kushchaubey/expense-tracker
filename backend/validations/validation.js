@@ -58,3 +58,19 @@ module.exports.validateUSER = (userName,userPass)=>{
     }
 
 }
+
+module.exports.validateCategoty = (category)=>{
+    const errors = []
+
+    if(!category || category.trim().length < 2){
+      errors.push("category name is invalid or less than 2 charecters")
+    }
+    
+  
+
+    return{
+        isValid: errors.length==0,
+        errors
+    }
+
+}
