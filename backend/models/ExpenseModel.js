@@ -19,6 +19,10 @@ const userModel  = sequelize.define("expense",{
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW,
 
+    },
+    cost:{
+       type:Sequelize.DOUBLE,
+       allowNull:false
     }
 
 

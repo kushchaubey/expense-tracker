@@ -11,9 +11,9 @@ routes.get("/date/:date",expensesController.getAllExpensesByDate);
 routes.post("/expenses",validationsMiddleware.formValidationMiddleWare,expensesController.AddExpense)
 
 
-routes.put("/expenses/:id",expensesController.updateExpense)
+// routes.put("/expenses/:id",expensesController.updateExpense)
 
-routes.delete("/expenses/:id",expensesController.deteExpense)
+// routes.delete("/expenses/:id",expensesController.deteExpense)
 
 
 module.exports = routes;
