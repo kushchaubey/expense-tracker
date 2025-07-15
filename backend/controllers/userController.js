@@ -1,7 +1,9 @@
 
 
 const userModel = require("../models/UserModel")
-const sendResponse = require("../Utils/sendResponse")
+const sendResponse = require("../Utils/sendResponse");
+const expenesesModel = require("../models/ExpenseModel");
+const { where } = require("sequelize");
 
 module.exports.postAddUser = (req, res, next) => {
   const userData = req.body;
@@ -30,13 +32,14 @@ module.exports.postAddUser = (req, res, next) => {
 module.exports.getUserByID = (req,res,next)=>{
 
       const userid = req.params.id
+     
 
-      userModel.findByPk(userid,
+          userModel.findByPk(userid,
           {
               attributes:['id','userName']
           
-          }
-      )
+          })
+      
       .then((result)=>{
         if(result){
            return sendResponse(res,200,'user successfully retrieved',result)
@@ -127,11 +130,21 @@ module.exports.deleteUser = (req,res,next)=>{
 
     const userID = req.params.id
 
-      userModel.destroy({
+     expenesesModel.findOne({where:{"userId":userid}})
+      .then((result)=>{
+
+        if(result){
+
+
+          return sendResponse(res,400,'user has expenses cannot detelte the user')
+
+        }
+      return userModel.destroy({
           where: {
             id: userID,
          },})
-  
+
+        })
       .then((result)=>{
         if(result){
            return sendResponse(res,201,'User deleted',result)

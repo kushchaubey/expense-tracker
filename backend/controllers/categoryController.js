@@ -2,7 +2,7 @@
 const { where } = require("sequelize");
 const sendResponse = require("../Utils/sendResponse");
 const categoryModel = require("../models/CategoryModel");
-const CategoryModel = require("../models/CategoryModel");
+const expenesesModel = require("../models/ExpenseModel");
 
 
 
@@ -135,11 +135,22 @@ module.exports.updateCategory = (req,res,next)=>{
 
 module.exports.deleteCategory = (req,res,next)=>{
      
+expenesesModel.findOne({where:{"categoryId":req.params.id}})
+      .then((result)=>{
 
-    categoryModel.destroy({
+        if(result){
+
+
+          return sendResponse(res,400,'This category is used in expenses, Can\'t detete it');
+
+        }
+
+    return categoryModel.destroy({
         where:{
             id : req.params.id,
         }
+      })
+
     })
      .then((result)=>{
             if(result){

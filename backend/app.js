@@ -27,17 +27,23 @@ app.use(express.urlencoded({extended:false}));
 
 
 
-app.use("/api",expensesRoutes);
+app.use("/api/expenses",expensesRoutes);
 
 app.use("/api/users",userRoute);
 app.use("/api/categories",categoryRoutes);
 
 //Model associations
 userModel.hasMany(expenseModel);
-expenseModel.belongsTo(userModel);
+expenseModel.belongsTo(userModel, {
+  onDelete: 'RESTRICT',
+  onUpdate: 'CASCADE'
+});
 
 categoryModel.hasMany(expenseModel);
-expenseModel.belongsTo(categoryModel);
+expenseModel.belongsTo(categoryModel, {
+  onDelete: 'RESTRICT',
+  onUpdate: 'CASCADE'
+});
 
 
 //syncing of models with table.

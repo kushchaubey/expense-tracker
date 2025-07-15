@@ -7,13 +7,14 @@ const validationsMiddleware  = require("../middlewares/validationsMiddleware");
 const expensesController = require("../controllers/expenseController");
 
 routes.get("/date/:date",expensesController.getAllExpensesByDate);
+routes.get("/",expensesController.getAllExpenses);
 
-routes.post("/expenses",validationsMiddleware.formValidationMiddleWare,expensesController.AddExpense)
+routes.post("/",validationsMiddleware.formValidationMiddleWare,expensesController.AddExpense)
 
 
-// routes.put("/expenses/:id",expensesController.updateExpense)
+ routes.put("/update/:id",validationsMiddleware.formValidationMiddleWare,expensesController.updateExpense)
 
-// routes.delete("/expenses/:id",expensesController.deteExpense)
+ routes.delete("/delete/:id",expensesController.deleteExpense)
 
 
 module.exports = routes;
