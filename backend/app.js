@@ -17,6 +17,7 @@ const userModel = require("./models/UserModel");
 const expensesRoutes = require("./routes/ExpenseRoutes");
 const userRoute = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const analyticsRoutes = require("./routes/analyticsRoutes");
 
 
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use("/api/expenses",expensesRoutes);
 
 app.use("/api/users",userRoute);
 app.use("/api/categories",categoryRoutes);
+app.use("/api/analytics",analyticsRoutes);
 
 //Model associations
 userModel.hasMany(expenseModel);
