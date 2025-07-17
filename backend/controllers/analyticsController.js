@@ -44,9 +44,10 @@ analyticsService.getGroupedData({
 
 
 exports.getUsers =async (req,res,next)=>{
-
+  try{
   const {year,start,end} = req.query;
-  
+
+
   const allUsers = await analyticsService.getData(year,start,end,'user.id','user.userName',userModel);
 
   if(allUsers){
@@ -56,12 +57,17 @@ exports.getUsers =async (req,res,next)=>{
     return sendResponse(res,400,"users not found",null)
 
   }
+  }catch(err){
+    console.log(err);
+    sendResponse(res,500,"internal server error",null)
+  }
 
 
 }
 
 exports.getCategories =async (req,res,next)=>{
 
+  try{
   const {year,start,end} = req.query;
   
   const allcats = await analyticsService.getData(year,start,end,'category.id','category.categoryName',categoryModel);
@@ -73,6 +79,11 @@ exports.getCategories =async (req,res,next)=>{
     return sendResponse(res,400,"users not found",null)
 
   }
+}catch(err){
+  console.log(err)
+      sendResponse(res,500,"internal server error",null)
+
+}
 
 
 }
@@ -80,6 +91,7 @@ exports.getCategories =async (req,res,next)=>{
 
 exports.getExpensesByCategories =async (req,res,next)=>{
 
+  try{
   const {year,start,end,category} = req.query;
   
   const AllExpenses = await analyticsService.getAllExpensesBasedOnType(year,start,end,category);
@@ -92,11 +104,17 @@ exports.getExpensesByCategories =async (req,res,next)=>{
 
   }
 
+}catch(err){
+  console.log(err);
+      sendResponse(res,500,"internal server error",null)
+
+}
 
 }
 
 exports.getExpensesByUsers =async (req,res,next)=>{
 
+  try{
   const {year,start,end,userId} = req.query;
   const category = null;
   const AllExpenses = await analyticsService.getAllExpensesBasedOnType(year,start,end,category,userId);
@@ -108,12 +126,17 @@ exports.getExpensesByUsers =async (req,res,next)=>{
     return sendResponse(res,400,"users not found",null)
 
   }
+}catch(err){
+  console.log(err);
+      sendResponse(res,500,"internal server error",null)
 
+}
 
 }
 
 exports.getTop5Expenses =async (req,res,next)=>{
 
+  try{
   const {year,start,end} = req.query;
   
   const allUsers = await analyticsService.getTop5Expenses(year,start,end);
@@ -125,4 +148,9 @@ exports.getTop5Expenses =async (req,res,next)=>{
     return sendResponse(res,400,"users not found",allUsers)
 
   }
+}catch(err){
+  console.log(err);
+      sendResponse(res,500,"internal server error",null)
+
+}
 }
