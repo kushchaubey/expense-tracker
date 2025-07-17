@@ -1,4 +1,4 @@
-const { Op, fn, col } = require('sequelize');
+const { Op, fn, col, where } = require('sequelize');
 const expenseModel = require('../models/ExpenseModel');
 const categoryModel = require('../models/CategoryModel');
 const userModel = require('../models/UserModel');
@@ -27,13 +27,16 @@ const startDate = new Date(`${start}T00:00:00Z`); // UTC start of day
   }
 };
 
-const getWhereClause = ({ year, start, end, category }) => {
+const getWhereClause = ({ year, start, end, category, userID }) => {
   const where = {
     date: getDateFilter(year, start, end),
   };
 
   if (category) {
     where.categoryId = category;
+  }else if(userID){
+    where.userId = userID;
+
   }
 
   return where;
@@ -115,10 +118,39 @@ const getTop5Expenses = async (year,start,end)=>{
    return top5Expense;
 }
 
+
+const getAllExpensesBasedOnType = async (year,start,end,category,userID)=>{
+
+   
+   const getAllExpenses =  await expenseModel.findAll({
+     include: [
+    {
+      model: userModel,
+      attributes: ['id', 'userName']
+    },
+    {
+      model: categoryModel,
+      attributes: ['id', 'categoryName']
+    },
+],
+    attributes:["id","itemName","cost", [fn('DATE', col('date')), 'onlyDate']],
+
+
+    where:getWhereClause({year,start,end,category,userID})
+   
+    
+})
+
+
+   return getAllExpenses;
+}
+
+
 module.exports = {
   getWhereClause,
   getGroupedData,
   getTotalExpense,
   getData,
-  getTop5Expenses
+  getTop5Expenses,
+  getAllExpensesBasedOnType
 };

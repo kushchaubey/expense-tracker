@@ -5,7 +5,6 @@ const userModel = require("../models/UserModel");
 const categoryModel = require("../models/CategoryModel");
 const sendResponse = require("../Utils/sendResponse");
 const Sequelize = require("sequelize");
-const sequelize = require("../Utils/Database");
 
 
 exports.getAllExpenses= (req,res,next)=>{

@@ -2,6 +2,7 @@ const  analyticsService  = require("../Utils/analyticsServices");
 const { Op, Sequelize} = require('sequelize');
 const sendResponse = require("../Utils/sendResponse");
 const userModel = require("../models/UserModel");
+const categoryModel = require("../models/CategoryModel");
 
 exports.getOverview = async (req, res) => {
   try {
@@ -52,12 +53,65 @@ exports.getUsers =async (req,res,next)=>{
 
     return sendResponse(res,200,"all users",allUsers)
   }else{
-    return sendResponse(res,400,"users not found",allUsers)
+    return sendResponse(res,400,"users not found",null)
 
   }
 
 
 }
+
+exports.getCategories =async (req,res,next)=>{
+
+  const {year,start,end} = req.query;
+  
+  const allcats = await analyticsService.getData(year,start,end,'category.id','category.categoryName',categoryModel);
+
+  if(allcats){
+
+    return sendResponse(res,200,"all users",allcats)
+  }else{
+    return sendResponse(res,400,"users not found",null)
+
+  }
+
+
+}
+
+
+exports.getExpensesByCategories =async (req,res,next)=>{
+
+  const {year,start,end,category} = req.query;
+  
+  const AllExpenses = await analyticsService.getAllExpensesBasedOnType(year,start,end,category);
+
+  if(AllExpenses){
+
+    return sendResponse(res,200,"all users",AllExpenses)
+  }else{
+    return sendResponse(res,400,"users not found",null)
+
+  }
+
+
+}
+
+exports.getExpensesByUsers =async (req,res,next)=>{
+
+  const {year,start,end,userId} = req.query;
+  const category = null;
+  const AllExpenses = await analyticsService.getAllExpensesBasedOnType(year,start,end,category,userId);
+
+  if(AllExpenses){
+
+    return sendResponse(res,200,"all users",AllExpenses)
+  }else{
+    return sendResponse(res,400,"users not found",null)
+
+  }
+
+
+}
+
 exports.getTop5Expenses =async (req,res,next)=>{
 
   const {year,start,end} = req.query;
