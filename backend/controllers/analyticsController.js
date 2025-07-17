@@ -1,5 +1,7 @@
 const  analyticsService  = require("../Utils/analyticsServices");
 const { Op, Sequelize} = require('sequelize');
+const sendResponse = require("../Utils/sendResponse");
+const userModel = require("../models/UserModel");
 
 exports.getOverview = async (req, res) => {
   try {
@@ -7,7 +9,8 @@ exports.getOverview = async (req, res) => {
     const filters = { year, start, end, category };
     const filter1 = { year, start, end };
 
-    const [total, categoryData, itemData, monthData] = await Promise.all([
+    
+    const [total, categoryData, itemData, monthData,userData] = await Promise.all([
       analyticsService.getTotalExpense(filters),
       analyticsService.getGroupedData({ ...filter1, groupField: 'category.categoryName', labelField: 'category.categoryName' }),
       analyticsService.getGroupedData({ ...filters, groupField: 'itemName', labelField: 'itemName' }),
@@ -15,18 +18,57 @@ analyticsService.getGroupedData({
   ...filters,
   groupField: Sequelize.literal('MONTH(date)'),
   labelField: Sequelize.literal('MONTH(date)')
-}) 
+}),
+
+
+      analyticsService.getGroupedData({ ...filters, groupField: 'userName', labelField: 'userName' }),
+
+
 
 ]);
-
-    res.status(200).json({
+        return sendResponse(res, 409, "overView page retrived", {
       total,
       category: categoryData,
       items: itemData,
-      months: monthData
+      months: monthData,
+      users:userData
     });
+
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
+exports.getUsers =async (req,res,next)=>{
+
+  const {year,start,end} = req.query;
+  
+  const allUsers = await analyticsService.getData(year,start,end,'user.id','user.userName',userModel);
+
+  if(allUsers){
+
+    return sendResponse(res,200,"all users",allUsers)
+  }else{
+    return sendResponse(res,400,"users not found",allUsers)
+
+  }
+
+
+}
+exports.getTop5Expenses =async (req,res,next)=>{
+
+  const {year,start,end} = req.query;
+  
+  const allUsers = await analyticsService.getTop5Expenses(year,start,end);
+
+  if(allUsers){
+
+    return sendResponse(res,200,"all users",allUsers)
+  }else{
+    return sendResponse(res,400,"users not found",allUsers)
+
+  }
+}
