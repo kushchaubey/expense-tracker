@@ -1,0 +1,48 @@
+
+@use '../../assets/css/variables.scss';
+
+
+.modeSwitcherContainer{
+    flex-grow: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .swithBox{
+          width: 60px;
+          height: 30px;
+          background-color: var(--background-switch);
+          border-radius: 15px;
+          position: relative;
+
+          input{
+
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            
+          }:checked + .rounded{
+                  
+           
+            transform: translateX(calc(60px - 30px));
+
+          }
+
+          .rounded{
+            display: flex;
+            align-items: center;
+            width:30px;
+            height: 30px;
+            background-color: var(--primary);
+            display: block;
+            position:absolute;
+            top:0%;
+            border-radius: 50%;
+            transition: all 100ms ease;
+            
+          }
+
+
+
+    }
+}

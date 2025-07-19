@@ -1,16 +1,35 @@
-:root{
+:root {
+  --primary: #3B82F6;         // Blue
+  --background: #F9FAFB;      // Almost white
+  --background-switch: #000000;      // Almost white
 
---primary: #3B82F6;      // Blue
---background: #F9FAFB;   // Almost white
---text: #111827;         // Very dark gray-
---accent: #10B981;       // Green (for income)
---danger: #EF4444;       // Red (for expense)
+  --text: #111827;            // Very dark gray
+  --accent: #10B981;          // Green (for income)
+  --danger: #EF4444;          // Red (for expense)
 
+  // New additions:
+  --header-bg: #ffffff;       // Header background
+  --header-text: #1F2937;     // Dark text for header
+  --button-bg: #3B82F6;       // Primary button
+  --button-hover: #2563EB;    // Darker blue on hover
+  --button-text: #ffffff;
+  --border-color: #E5E7EB;    // Light gray for dividers
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
-.dark{
---primary: #60A5FA;
---background: #1F2937;   // Dark blue-gray
---text: #F3F4F6;         // Light gray
---accent: #34D399;
---danger: #F87171;
+
+.dark {
+  --primary: #60A5FA;
+  --background: #1F2937;      // Dark blue-gray
+  --text: #F3F4F6;            // Light gray
+  --accent: #34D399;
+  --danger: #F87171;
+ --background-switch: #ececec;
+  // New additions:
+  --header-bg: #111827;       // Very dark gray
+  --header-text: #F9FAFB;     // Light text
+  --button-bg: #3B82F6;       // Primary button
+  --button-hover: #1D4ED8;    // Deeper blue
+  --button-text: #ffffff;
+  --border-color: #374151;    // Dark gray border
+  --shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
 }

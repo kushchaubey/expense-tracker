@@ -1,8 +1,8 @@
-@import './variables';
+@use './variables';
 
-.cool{
-   background-color: var(--background); 
-}
-h1{
-   color: var(--text);
+*,body,html{
+   margin: 0;
+   padding: 0;
+   
+
 }

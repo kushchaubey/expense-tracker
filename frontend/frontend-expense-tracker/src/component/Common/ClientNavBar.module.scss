@@ -1,0 +1,30 @@
+@use '../../assets/css/variables.scss';
+
+
+.nav{
+    flex-grow: 10;
+     ul{
+
+        display: flex;
+        justify-content: flex-end;
+        height: 100%;
+
+        li{
+
+        display: flex;             
+        align-items: center;   
+        margin-right: 1rem;
+        list-style: none;
+             a{
+                text-decoration: none;
+                font-size: 1.2rem;
+                color: var(--text);
+              
+             }:hover{
+
+                color: var(--primary);
+                text-decoration: underline;
+             }
+         }
+     }
+}

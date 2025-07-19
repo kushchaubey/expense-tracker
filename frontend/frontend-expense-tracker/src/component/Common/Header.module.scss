@@ -1,0 +1,22 @@
+@use '../../assets/css/variables.scss';
+
+
+.header{
+    display: flex;
+    width: 100%;
+    background-color: var(--background);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    height: 3rem;
+    max-height: 46px;
+    
+}
+.logo{
+    display: flex;
+    align-items: center;
+    flex-grow: 4;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+    text-shadow: var(--shadow);
+}
