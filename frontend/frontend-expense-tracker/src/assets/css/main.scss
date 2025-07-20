@@ -3,6 +3,18 @@
 *,body,html{
    margin: 0;
    padding: 0;
+   box-sizing: border-box;
    
 
+}
+
+.mainContainer{
+  
+   display: flex;
+   margin-top: var(--margin);
+   width: 90%;
+   max-width: 1200px;
+   justify-self: center;
+ 
+   
 }

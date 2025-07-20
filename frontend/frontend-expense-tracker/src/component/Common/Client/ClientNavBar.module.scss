@@ -1,4 +1,4 @@
-@use '../../assets/css/variables.scss';
+@use '../../../assets/css/variables.scss';
 
 
 .nav{
@@ -25,6 +25,11 @@
                 color: var(--primary);
                 text-decoration: underline;
              }
+            a.active{
+
+                color: var(--primary);
+
+            }
          }
      }
 }
