@@ -1,20 +1,10 @@
 import style from './ExpensePage.module.scss'
 
-import DateInput from '../utilcomponents/DateInput';
+import ExpenseDateFilter from '../utilcomponents/ExpenseDateFilter';
 
 const ExpensePage =()=>{
 
 
-    function getDate(event){
-
-        if(!event.target.value){
-            console.log("error ")
-        }else{
-            var parseDated = new Date(event.target.value);
-            console.log(parseDated.getFullYear());
-        }
-        
-    }
     return(
 
         <div className='mainContainer'>
@@ -23,8 +13,7 @@ const ExpensePage =()=>{
             <div className={style.heading}>
                     <h1 >Expense page</h1>
                   
-                  <DateInput handleDate={getDate}></DateInput>
-                       <DateInput ></DateInput>
+                <ExpenseDateFilter/>
 
 
             </div>

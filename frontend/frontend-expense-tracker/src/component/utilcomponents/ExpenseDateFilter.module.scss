@@ -1,0 +1,65 @@
+@use '../../assets/css/variables.scss';
+
+.expenseFilterContainer  {
+
+    width: 80%;
+    display: flex;
+    justify-self: center;
+    flex-wrap: wrap;
+    margin: 2% 0;
+    align-items: center;
+
+    .formGroup{
+       flex-grow: 4;
+       display: flex;
+       align-items: center;
+
+       label{
+        color: var(--text);
+        font-size: 1rem;
+        width: 30%;
+       }
+
+    @media screen and (max-width:821px) {
+
+        
+     width: 80%;
+    
+     margin-bottom: 2%;
+        
+    }
+    }
+
+    .filterButton{
+        flex-grow: 4;
+        background-color: var(--button-bg);
+        color: var(--button-text);
+        padding: 1%;
+        border-radius: 5px;
+        margin: 0% 2%;
+        font-size: 1rem;
+        cursor: pointer;
+        &:hover{
+         background-color: var(--button-hover);
+
+
+    }
+
+    @media screen and (max-width:821px) {  
+     width: 80%;
+    
+    }
+    }
+
+ 
+
+
+    @media screen and (max-width:821px) {
+
+        
+            flex-direction: column;
+    
+        
+    }
+
+}

@@ -1,4 +1,11 @@
 
 .dateButton{
-    margin-top: 20px;
+    margin: 0 2%;
+    width: 70%;
+
+    input[type="date"]{
+        padding: 2% 0;
+        width: 100%;
+        font-size: 1rem;
+    }
 }
