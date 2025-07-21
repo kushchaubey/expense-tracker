@@ -4,7 +4,7 @@ const categoryModel = require('../models/CategoryModel');
 const userModel = require('../models/UserModel');
 
 
-const getDateFilter = (year, start, end) => {
+const  getDateFilter = (year, start, end) => {
   console.log("start:", start);
    console.log("end:", end);
 
@@ -41,6 +41,15 @@ const getWhereClause = ({ year, start, end, category, userID }) => {
 
   return where;
 };
+
+const getTodaysDate = ()=>{
+const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+const dd = String(today.getDate()).padStart(2, '0');
+return `${yyyy}-${mm}-${dd}`;
+
+}
 
 // Generic fetch grouped data (e.g. by category, item, month, day)
 const getGroupedData = async ({ groupField, labelField, year, start, end, category, limit = 5 }) => {
@@ -152,5 +161,6 @@ module.exports = {
   getTotalExpense,
   getData,
   getTop5Expenses,
-  getAllExpensesBasedOnType
+  getAllExpensesBasedOnType,
+  getTodaysDate
 };

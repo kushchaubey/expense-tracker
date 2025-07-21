@@ -4,7 +4,8 @@ const expenseModel = require("../models/ExpenseModel");
 const userModel = require("../models/UserModel");
 const categoryModel = require("../models/CategoryModel");
 const sendResponse = require("../Utils/sendResponse");
-const Sequelize = require("sequelize");
+const {Sequelize,Op} = require("sequelize");
+const analyticsService = require('../Utils/analyticsServices');
 
 
 exports.getAllExpenses= (req,res,next)=>{
@@ -29,13 +30,13 @@ expenseModel.findAll({
 .then((expeneses)=>{
     if(!expeneses){
         
-        return sendResponse(res,400,"expenses are not available",null);
+        return sendResponse(res,400,"expenses are not available");
     }
 
       return sendResponse(res,200,"all the expenses",expeneses);
 })
 .catch((err)=>{
-       return sendResponse(res,500,"Internal server Error",null)
+       return sendResponse(res,500,"Internal server Error")
 })
 
 
@@ -44,17 +45,46 @@ expenseModel.findAll({
 
 
 exports.getAllExpensesByDate= (req,res,next)=>{
-      
-
-    try{
+    const todayDate = analyticsService.getTodaysDate();
+    expenseModel.findAll({
+   include: [
+    {
+      model: userModel,
+      attributes: ['id', 'userName']
+    },
+    {
+      model: categoryModel,
+      attributes: ['id', 'categoryName']
+    },
+],
+    attributes:["id","itemName","cost", [Sequelize.fn('DATE', Sequelize.col('date')), 'onlyDate']],
         
-       return res.status(200).send({message:`its a get all route by date ${req.params.date}`})
+    where:analyticsService.getWhereClause({start:todayDate,end:todayDate}),
+    raw:true
+        
+    }).then((response)=>{
+
+        if(response.length>0){
+                   return sendResponse(res,200,`Expenses of ${analyticsService.getTodaysDate()}`,response)
+
+        }else{
+                  return sendResponse(res,200,'No expense found today',null)
+ 
+        }
+    }).catch(err=>{
+        console.log(err);
+       return sendResponse(res,500,"Internal server Error",null)
+
+    })
+
+    
+
+
+        
          
          
      
-    }catch(err){
-        console.log(err);
-    }
+    
 
 }
 
