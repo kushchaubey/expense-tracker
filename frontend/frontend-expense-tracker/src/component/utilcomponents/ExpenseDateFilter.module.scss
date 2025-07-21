@@ -1,7 +1,11 @@
 @use '../../assets/css/variables.scss';
 
+
+
+
 .expenseFilterContainer  {
 
+    
     width: 80%;
     display: flex;
     justify-self: center;
@@ -9,10 +13,11 @@
     margin: 2% 0;
     align-items: center;
 
+ 
     .formGroup{
        flex-grow: 4;
        display: flex;
-       align-items: center;
+       align-items: baseline;
 
        label{
         color: var(--text);
@@ -29,19 +34,25 @@
         
     }
     }
-
     .filterButton{
         flex-grow: 4;
         background-color: var(--button-bg);
         color: var(--button-text);
-        padding: 1%;
+        padding: 0.8%;
         border-radius: 5px;
         margin: 0% 2%;
         font-size: 1rem;
+        align-self: flex-start;
+        border: transparent;
         cursor: pointer;
+     @media screen and (max-width:821px) {  
+        
+        align-self: center;
+    
+    }
         &:hover{
          background-color: var(--button-hover);
-
+        
 
     }
 
@@ -53,6 +64,10 @@
 
  
 
+
+
+
+    
 
     @media screen and (max-width:821px) {
 

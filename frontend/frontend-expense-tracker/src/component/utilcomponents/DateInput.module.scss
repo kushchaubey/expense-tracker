@@ -2,10 +2,25 @@
 .dateButton{
     margin: 0 2%;
     width: 70%;
+    height: 55px;
 
     input[type="date"]{
         padding: 2% 0;
         width: 100%;
         font-size: 1rem;
+        color: var(--text);
+        border: 1px solid var(--text);
+    
     }
+
+    .error{
+        text-align: left;
+        margin-top: 5px;
+        color: var(--danger);
+        font-size: 0.8rem;
+    }
+
+
+    
 }
+

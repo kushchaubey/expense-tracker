@@ -19,3 +19,16 @@
 
    
 }
+
+.dark [type="date"]{
+        
+         &::-webkit-calendar-picker-indicator {
+ filter: invert(1);
+  background-color: transparent;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+    }
+
+   
