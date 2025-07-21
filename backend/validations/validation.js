@@ -41,6 +41,20 @@ module.exports.validateDate = (date,)=>{
 
 }
 
+module.exports.validateDatesContinuity= (startDate,endDate)=>{
+    const errors = []
+   if ((new Date(startDate) > new Date(endDate)) ||(new Date(startDate) == new Date(endDate)) ){
+    
+    errors.push("End date must be after the start date or the same date")
+
+   }
+
+    return{
+        isValid: errors.length==0,
+        errors
+    }
+}
+
 module.exports.validateUSER = (userName,userPass)=>{
     const errors = []
 
@@ -74,4 +88,5 @@ module.exports.validateCategoty = (category)=>{
     }
 
 }
+
 

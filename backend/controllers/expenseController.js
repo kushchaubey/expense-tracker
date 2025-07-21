@@ -6,7 +6,7 @@ const categoryModel = require("../models/CategoryModel");
 const sendResponse = require("../Utils/sendResponse");
 const {Sequelize,Op} = require("sequelize");
 const analyticsService = require('../Utils/analyticsServices');
-
+const validation = require("../validations/validation")
 
 exports.getAllExpenses= (req,res,next)=>{
       
@@ -44,7 +44,7 @@ expenseModel.findAll({
 }
 
 
-exports.getAllExpensesByDate= (req,res,next)=>{
+exports.getAllExpensesByTodayDate= (req,res,next)=>{
     const todayDate = analyticsService.getTodaysDate();
     expenseModel.findAll({
    include: [
@@ -60,6 +60,71 @@ exports.getAllExpensesByDate= (req,res,next)=>{
     attributes:["id","itemName","cost", [Sequelize.fn('DATE', Sequelize.col('date')), 'onlyDate']],
         
     where:analyticsService.getWhereClause({start:todayDate,end:todayDate}),
+    raw:true
+        
+    }).then((response)=>{
+
+        if(response.length>0){
+                   return sendResponse(res,200,`Expenses of ${analyticsService.getTodaysDate()}`,response)
+
+        }else{
+                  return sendResponse(res,200,'No expense found today',null)
+ 
+        }
+    }).catch(err=>{
+        console.log(err);
+       return sendResponse(res,500,"Internal server Error",null)
+
+    })
+
+    
+
+
+        
+         
+         
+     
+    
+
+}
+
+exports.getAllExpensesByDate= (req,res,next)=>{
+
+    var {start,end}= req.query;
+
+
+   const  sartDate = validation.validateCategoty(start);
+
+       
+   const  endDate = validation.validateCategoty(end);
+  
+   const  checkDate = validation.validateDatesContinuity(start,end)
+
+   if(sartDate.errors.length >0 || endDate.errors.length > 0){
+      console.log(sartDate.errors)
+     return sendResponse(res,400,'start date or end date not valid',null)
+
+   }
+
+   if(checkDate.errors.length>0){
+         return sendResponse(res,400,'end date must be after start date or same date',null)
+
+   }
+
+  expenseModel.findAll({
+   include: [
+    {
+      model: userModel,
+      attributes: ['id', 'userName']
+    },
+    {
+      model: categoryModel,
+      attributes: ['id', 'categoryName']
+    },
+],
+    attributes:["id","itemName","cost", [Sequelize.fn('DATE', Sequelize.col('date')), 'onlyDate']],
+        
+    where:analyticsService.getWhereClause({start:start,end:end}),
     raw:true
         
     }).then((response)=>{
