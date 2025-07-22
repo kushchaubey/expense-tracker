@@ -1,0 +1,24 @@
+@use '../../../assets/css/variables.scss';
+
+
+.buttonComponent{
+  
+    display: flex;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    padding: 0.8%;
+    border-radius: 5px;
+    margin: 2% 0%;
+    font-size: 1rem;
+    align-self: flex-start;
+    border: transparent;
+    cursor: pointer;
+
+     &:hover{
+         background-color: var(--button-hover);
+
+         
+        
+
+    }
+} 

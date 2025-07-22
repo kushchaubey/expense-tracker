@@ -5,10 +5,16 @@ import DataTableComponent from '../utilcomponents/DataTableComponent';
 import { useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa'; // for icons
 import {getdataBasedOnURL} from '../../Utils/FetchingUtil';
+import ActionButton from '../utilcomponents/Buttons/ActionButton';
+import ButtonComponent from '../utilcomponents/Buttons/ButtonComponent';
+import PrimaryModel from '../utilcomponents/Models/PrimaryModel';
 
 const ExpensePage =()=>{
 
-     const [expenses, setExpenses]  = useState([])
+     const [expenses, setExpenses]  = useState([]);
+     const [loading, setloading]  = useState(true)
+     const [modelActive, setmodelActive]  = useState(false)
+
 
      function handleEdit(row){
              console.log(row.id);
@@ -47,12 +53,12 @@ const columns = [
     name: 'Actions',
     cell: row => (
       <div style={{ display: 'flex', gap: '10px' }}>
-        <button onClick={() => handleEdit(row)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#3B82F6' }}>
+        <ActionButton onClick={() => handleEdit(row)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#3B82F6' }}>
           <FaEdit />
-        </button>
-        <button onClick={() => handleDelete(row)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'red' }}>
+        </ActionButton>
+        <ActionButton onClick={() => handleDelete(row)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'red' }}>
           <FaTrash />
-        </button>
+        </ActionButton>
       </div>
     ),
     ignoreRowClick: true,
@@ -61,61 +67,35 @@ const columns = [
 ];
 
     useEffect(()=>{
-
-
-        // axios.get("http://localhost:3000/api/expenses/today")
-        //     .then((res)=>{
-               
-        //         setExpenses(res.data.data)
-        //     })
-        //     .catch((err)=>{
-        //         console.log(err)
-        //     })
-
-    getdataBasedOnURL("http://localhost:3000/api/expenses/today",setExpenses)
-
-
+      getdataBasedOnURL("http://localhost:3000/api/expenses/today",setExpenses,setloading)
     },[])
 
 
 
 
  function  getDatesfromFilter(dates){
-        
-        //  axios.get(`http://localhost:3000/api/expenses/date?start=${dates.startDate}&end=${dates.endDate}`)
-        //     .then((res)=>{
-              
-        //         setExpenses(res.data.data)
-        //     })
-        //     .catch((err)=>{
-        //         console.log(err)
-        //     })
-        
+       getdataBasedOnURL(`http://localhost:3000/api/expenses/date?start=${dates.startDate}&end=${dates.endDate}`,setExpenses,setloading)
+      }
 
-                   getdataBasedOnURL(`http://localhost:3000/api/expenses/date?start=${dates.startDate}&end=${dates.endDate}`,setExpenses)
+function AddExpense(){
+  
+     setmodelActive(true)
+    
 
-    }
+}
     return(
 
         <div className='mainContainer'>
-
-
             <div className={style.heading}>
                     <h1 >Expense page</h1>
-                  
                 <ExpenseDateFilter handleDate={getDatesfromFilter}/>
-
-                <DataTableComponent columns={columns} data={expenses}/>
+                 <ButtonComponent handleClick={AddExpense}>Add Expense</ButtonComponent>
+                  <PrimaryModel setModel={setmodelActive} modelStatus={modelActive}><h1>Hello world</h1></PrimaryModel>
+                <DataTableComponent columns={columns} data={expenses} loading={loading}/>
             </div>
-              
-
-
-
-    
-
-
         </div>
     )
+  
 }
 
 export default ExpensePage;
