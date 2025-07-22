@@ -8,6 +8,7 @@ import {getdataBasedOnURL} from '../../Utils/FetchingUtil';
 import ActionButton from '../utilcomponents/Buttons/ActionButton';
 import ButtonComponent from '../utilcomponents/Buttons/ButtonComponent';
 import PrimaryModel from '../utilcomponents/Models/PrimaryModel';
+import AddUpdateForm from '../utilcomponents/Forms/AddUpdateForm';
 
 const ExpensePage =()=>{
 
@@ -90,7 +91,7 @@ function AddExpense(){
                     <h1 >Expense page</h1>
                 <ExpenseDateFilter handleDate={getDatesfromFilter}/>
                  <ButtonComponent handleClick={AddExpense}>Add Expense</ButtonComponent>
-                  <PrimaryModel setModel={setmodelActive} modelStatus={modelActive}><h1>Hello world</h1></PrimaryModel>
+                  <PrimaryModel setModel={setmodelActive} modelStatus={modelActive}>   <AddUpdateForm formName={'Add Expense'} /></PrimaryModel>
                 <DataTableComponent columns={columns} data={expenses} loading={loading}/>
             </div>
         </div>
