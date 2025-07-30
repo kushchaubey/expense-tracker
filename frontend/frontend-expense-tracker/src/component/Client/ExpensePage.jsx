@@ -9,6 +9,7 @@ import ActionButton from '../utilcomponents/Buttons/ActionButton';
 import ButtonComponent from '../utilcomponents/Buttons/ButtonComponent';
 import PrimaryModel from '../utilcomponents/Models/PrimaryModel';
 import AddUpdateForm from '../utilcomponents/Forms/AddUpdateForm';
+import { ToastContainer } from 'react-toastify';
 
 const ExpensePage =()=>{
 
@@ -63,7 +64,7 @@ const columns = [
       </div>
     ),
     ignoreRowClick: true,
-    button: true,
+   // button: true,
   }
 ];
 
@@ -85,6 +86,20 @@ function AddExpense(){
 
 }
     return(
+     <>
+      <ToastContainer
+      
+       position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      
+      
+      />
 
         <div className='mainContainer'>
             <div className={style.heading}>
@@ -95,6 +110,8 @@ function AddExpense(){
                 <DataTableComponent columns={columns} data={expenses} loading={loading}/>
             </div>
         </div>
+
+        </>
     )
   
 }

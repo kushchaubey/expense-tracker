@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { formValidation } from '../../../Utils/formValidation';
 import {getdataBasedOnURL} from '../../../Utils/FetchingUtil'
 import axios from 'axios';
+import { toast } from 'react-toastify';
 const AddUpdateForm = ({ formName }) => {
 
 
@@ -41,7 +42,6 @@ const AddUpdateForm = ({ formName }) => {
       ...prev,
       date: todaysDate,
     }))
-      console.log(formData);
   },[]);
 
    useEffect(()=>{
@@ -121,22 +121,26 @@ console.log(newError);
 
  axios.post('http://localhost:3000/api/expenses', formData)
   .then(function (response) {
-    console.log(response);
+  
+    if(response.data.statusText=="success"){
+       toast.success(response.data.message)
+    }
+  
     setFormData({
     itemName: '',
     cost: '',
     category: '',
     user: '',
-    date: ''
+    date: formData.date
   })
-  })
-  .catch(function (error) {
-    console.log(error);
+  }).catch(function () {
+    toast.error("Something went wrong!")
   });
    
    
   } else {
-    console.log("❌ Validation failed");
+       toast.error("Validation failed")
+
   }
 };
 
