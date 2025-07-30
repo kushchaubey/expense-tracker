@@ -33,9 +33,15 @@ const AddUpdateForm = ({ formName }) => {
 
   useEffect(()=>{
             
+    let newDate = new Date();
+   let todaysDate = newDate.toISOString().split('T')[0];
+
      getdataBasedOnURL("http://localhost:3000/api/categories",setCategories,setloading);
-   
-      
+     setFormData((prev) => ({
+      ...prev,
+      date: todaysDate,
+    }))
+      console.log(formData);
   },[]);
 
    useEffect(()=>{

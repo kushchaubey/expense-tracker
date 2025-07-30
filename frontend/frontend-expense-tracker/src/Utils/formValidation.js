@@ -41,7 +41,8 @@ validateDate(date) {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Remove time part
 
-  if (inputDate > today) {
+  console.log(today)
+  if (inputDate.setHours(0, 0, 0, 0) > today) {
     return "Date cannot be in the future";
   }
 
