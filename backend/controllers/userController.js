@@ -3,15 +3,14 @@
 const userModel = require("../models/UserModel")
 const sendResponse = require("../Utils/sendResponse");
 const expenesesModel = require("../models/ExpenseModel");
-const { where } = require("sequelize");
-
+const messages = require("../Utils/Messages")
 module.exports.postAddUser = (req, res, next) => {
   const userData = req.body;
 
   userModel.findOne({ where: { userName: userData.userName } })
     .then(existingUser => {
-      if (existingUser) {
-        return sendResponse(res, 409, "User already exists with this username", null);
+      if (existingUser){
+        return sendResponse(res, 200, messages.statusText.fail, messages.validation.userAlreadyExists, null);
       }
 
       // No existing user, create one
@@ -20,12 +19,12 @@ module.exports.postAddUser = (req, res, next) => {
     .then(result => {
       // If a new user was created, return success
       if (result && !result.statusCode) {
-        return sendResponse(res, 201, "User created successfully!", null);
+        return sendResponse(res, 201, messages.statusText.success, messages.crud.UserCreated, null);
       }
     })
     .catch(err => {
       console.log(err);
-      return sendResponse(res, 500, "Internal server error", null);
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     });
 };
 
@@ -42,16 +41,16 @@ module.exports.getUserByID = (req,res,next)=>{
       
       .then((result)=>{
         if(result){
-           return sendResponse(res,200,'user successfully retrieved',result)
+           return sendResponse(res,200, messages.statusText.success,  messages.crud.userRetrived ,result)
         }else{
-            return sendResponse(res,400,'user Not found',null)
+            return sendResponse(res,404, messages.statusText.fail,messages.crud.userNotfound,null)
 
         }
       }
     )
     .catch((err)=>{
           console.log(err);
-          return sendResponse(res,500,'internal server error',null)
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     })
     
 
@@ -70,16 +69,16 @@ module.exports.getUsers = (req,res,next)=>{
       )
       .then((result)=>{
         if(result){
-           return sendResponse(res,200,'all users',result)
+           return sendResponse(res,200,messages.statusText.success, messages.crud.userRetrived ,result)
         }else{
-            return sendResponse(res,400,'users Not found',null)
+            return sendResponse(res,404,messages.statusText.fail, messages.crud.userNotfound,null)
 
         }
       }
     )
     .catch((err)=>{
           console.log(err);
-          return sendResponse(res,500,'internal server error',null)
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     })
     
 
@@ -94,7 +93,7 @@ module.exports.updateUser = (req,res,next)=>{
    userModel.findOne({ where: { userName: userData.userName } })
     .then(existingUser => {
       if (existingUser && existingUser.id != req.params.id) {
-        return sendResponse(res, 409, "User already exists with this username", null);
+        return sendResponse(res, 409, messages.statusText.fail, messages.validation.userAlreadyExists, null);
       }
       // No existing user, create one
       return  userModel.update(
@@ -108,16 +107,16 @@ module.exports.updateUser = (req,res,next)=>{
     })
       .then((result)=>{
         if(result){
-           return sendResponse(res,201,'User Updated',result)
+           return sendResponse(res,201, messages.statusText.success, messages.crud.userUpdated,result)
         }else{
-            return sendResponse(res,400,'user not updated',null)
+            return sendResponse(res,400, messages.statusText.fail,messages.crud.userNotUpdated,null)
 
         }
       }
     )
     .catch((err)=>{
           console.log(err);
-          return sendResponse(res,500,'internal server error',null)
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     })
     
 
@@ -130,13 +129,13 @@ module.exports.deleteUser = (req,res,next)=>{
 
     const userID = req.params.id
 
-     expenesesModel.findOne({where:{"userId":userid}})
+     expenesesModel.findOne({where:{"userId":userID}})
       .then((result)=>{
 
         if(result){
 
 
-          return sendResponse(res,400,'user has expenses cannot detelte the user')
+          return sendResponse(res,400,messages.statusText.fail, messages.crud.userCantDelete)
 
         }
       return userModel.destroy({
@@ -147,16 +146,16 @@ module.exports.deleteUser = (req,res,next)=>{
         })
       .then((result)=>{
         if(result){
-           return sendResponse(res,201,'User deleted',result)
+           return sendResponse(res,201,messages.statusText.success,messages.crud.userDeleted,result)
         }else{
-            return sendResponse(res,400,'user not deleted',null)
+            return sendResponse(res,400,messages.statusText.fail, messages.crud.userNotDeleted,null)
 
         }
       }
     )
     .catch((err)=>{
           console.log(err);
-          return sendResponse(res,500,'internal server error',null)
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     })
     
 

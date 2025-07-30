@@ -10,12 +10,13 @@ const  getDateFilter = (year, start, end) => {
 
   const now = new Date();
   if (start && end) {
-       
+       console.log("n");
 const startDate = new Date(`${start}T00:00:00Z`); // UTC start of day
    
  const endDate = new Date(`${end}T23:59:59Z`);     // UTC end of day
 
-    return { [Op.between]: [startDate, endDate] };
+  return { [Op.between]: [start, endDate] };
+
   } else if (year) {
     return {
       [Op.between]: [`${year}-01-01`, `${year}-12-31`]

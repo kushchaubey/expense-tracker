@@ -2,6 +2,8 @@ require('dotenv').config();
 
 
 const express = require("express");
+const cors = require('cors');
+
 const app = express();
 
 
@@ -19,9 +21,15 @@ const userRoute = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 
+app.use(cors({
+  origin: 'http://localhost:5173', // allow only your frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'] // allow JSON headers
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+
 
 
 

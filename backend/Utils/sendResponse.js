@@ -1,5 +1,5 @@
-module.exports = sendResponse = (res, code, message, data = null) => {
-    res.status(code).json({ message, data });
+module.exports = sendResponse = (res, code, statusText, message, data = null) => {
+    res.status(code).json({ statusText ,message, data });
 };
 
 

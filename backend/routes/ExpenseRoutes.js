@@ -10,6 +10,7 @@ routes.get("/today/",expensesController.getAllExpensesByTodayDate);
 routes.get("/date/",expensesController.getAllExpensesByDate);
 
 routes.get("/",expensesController.getAllExpenses);
+routes.get("/:id",expensesController.getExpensesByID);
 
 routes.post("/",validationsMiddleware.formValidationMiddleWare,expensesController.AddExpense)
 

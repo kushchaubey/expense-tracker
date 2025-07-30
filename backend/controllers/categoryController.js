@@ -3,21 +3,24 @@ const { where } = require("sequelize");
 const sendResponse = require("../Utils/sendResponse");
 const categoryModel = require("../models/CategoryModel");
 const expenesesModel = require("../models/ExpenseModel");
+const messages = require("../Utils/Messages.js")
 
 
 
 module.exports.getAllCategories = (req,res,next)=>{
-     
+             console.log(messages.statusText.success);
+
     categoryModel.findAll({
-        attributes:["categoryName"]
+        attributes:["id","categoryName"]
     })
     .then((categories)=>{
-        return sendResponse(res,200,"all categories",categories)
+        console.log(messages.statusText.success);
+      return sendResponse(res, 200, messages.statusText.success, messages.crud.categoryRetrieved, categories);
     })
     .catch(err=>
         {
          console.log(err);
-         return sendResponse(res,500,"Internal server error",null)
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     }
 
     )
@@ -38,7 +41,7 @@ module.exports.AddCategory = (req,res,next)=>{
     .then((existing)=>{
          console.log("existing");
         if(existing){
-          return sendResponse(res,409,"this category is already existed",null)
+        return sendResponse(res, 409, messages.statusText.fail , messages.validation.categoryAlreadyExists, null);
         }
 
          return categoryModel.create(categoryData);
@@ -47,14 +50,14 @@ module.exports.AddCategory = (req,res,next)=>{
     .then((result)=>{
    
         if(result && !result.statusCode){
-         return sendResponse(res,201,"category is created",result)
+        return sendResponse(res, 201, messages.statusText.success, messages.crud.categoryCreated, result);
 
         }
     })
     .catch(err=>
      {
          console.log(err);
-         return sendResponse(res,500,"Internal server error",null)
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     }
     )  
 
@@ -71,18 +74,18 @@ module.exports.getCategoryByID = (req,res,next)=>{
     .then((category)=>{
 
         if(category){
-          return sendResponse(res,200,"category found ",category)
+        return sendResponse(res, 200, messages.statusText.success, messages.crud.categoryRetrieved, category);
         }else{
      
-          return sendResponse(res,400,"Category not found ",category)
+        return sendResponse(res, 404, messages.statusText.fail, messages.crud.categoryNotFound, null);
 
         }
 
     })
     .catch(err=>
      {
-    onsole.log(err);
-         return sendResponse(res,500,"Internal server error",null)
+    console.log(err);
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     }
     )  
 
@@ -102,7 +105,7 @@ module.exports.updateCategory = (req,res,next)=>{
     .then((existingCategory)=>{
 
         if(existingCategory && existingCategory.id != req.params.id){
-            return sendResponse(res,409,"this category name is already exists",null)
+        return sendResponse(res, 409, messages.statusText.fail, messages.validation.categoryAlreadyExists, null);
         }
          
         return   categoryModel.update(categoryData,{
@@ -114,10 +117,10 @@ module.exports.updateCategory = (req,res,next)=>{
     .then((category)=>{
 
         if(category){
-          return sendResponse(res,200,"category updated ",category)
+        return sendResponse(res, 200, messages.statusText.success, messages.crud.categoryUpdated, category);
         }else{
      
-          return sendResponse(res,400,"Category not updated ",category)
+        return sendResponse(res, 400, messages.statusText.fail, messages.crud.categoryNotUpdated, null);
 
         }
 
@@ -125,7 +128,7 @@ module.exports.updateCategory = (req,res,next)=>{
     .catch(err=>
      {
     console.log(err);
-         return sendResponse(res,500,"Internal server error",null)
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
     }
     )  
 
@@ -141,29 +144,29 @@ expenesesModel.findOne({where:{"categoryId":req.params.id}})
         if(result){
 
 
-          return sendResponse(res,400,'This category is used in expenses, Can\'t detete it');
+        return sendResponse(res, 400, messages.statusText.fail, messages.crud.categoryCantDelete, null);
 
-        }
+        }else{
 
     return categoryModel.destroy({
         where:{
             id : req.params.id,
         }
       })
-
+    }
     })
      .then((result)=>{
             if(result){
-               return sendResponse(res,201,'category deleted',result)
+        return sendResponse(res, 200, messages.statusText.success, messages.crud.categoryDeleted, result);
             }else{
-                return sendResponse(res,400,'category not deleted',null)
+        return sendResponse(res, 400, messages.statusText.fail, messages.crud.categoryNotDeleted, null);
     
             }
           }
         )
         .catch((err)=>{
               console.log(err);
-              return sendResponse(res,500,'internal server error',null)
+      return sendResponse(res, 500, messages.statusText.fail, messages.server.error, null);
         })
 
 

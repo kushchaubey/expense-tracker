@@ -1,21 +1,23 @@
 
+const messages = require("../Utils/Messages");
+
 const validateExpenseFormData = (data) => {
   const errors = [];
 
   if (!data.itemName || data.itemName.trim().length < 2) {
-    errors.push("Invalid or missing name.");
+    errors.push(messages.validation.invalidName);
   }
 
   if (!data.category || typeof data.category !== "string") {
-    errors.push("Category is required.");
+    errors.push(messages.validation.invalidCat);
   }
 
   if (!data.cost || isNaN(data.cost) || Number(data.cost) <= 0) {
-    errors.push("Cost must be a number greater than 0.");
+    errors.push(messages.validation.invalidCost);
   }
 
   if (data.date && isNaN(Date.parse(data.date))) {
-    errors.push("Invalid date format.");
+    errors.push(messages.validation.invalidDate);
   }
 
   return {
@@ -31,7 +33,7 @@ module.exports.validateDate = (date,)=>{
     const errors = []
 
     if(!date || isNaN(Date.parse(date))){
-      errors.push("invalid date format.")
+      errors.push(messages.validation.invalidDate)
     }
 
     return{
@@ -45,7 +47,7 @@ module.exports.validateDatesContinuity= (startDate,endDate)=>{
     const errors = []
    if ((new Date(startDate) > new Date(endDate)) ||(new Date(startDate) == new Date(endDate)) ){
     
-    errors.push("End date must be after the start date or the same date")
+    errors.push(messages.validation.invalidEndDate)
 
    }
 
@@ -59,11 +61,11 @@ module.exports.validateUSER = (userName,userPass)=>{
     const errors = []
 
     if(!userName || userName.trim().length < 2){
-      errors.push("UserName is invalid or less than charecter")
+      errors.push(messages.validation.invalidUserName)
     }
     
     if(!userPass || userPass.trim().length < 8){
-      errors.push("Password is invalid or less than 8 charecter")
+      errors.push(messages.validation.invalidPass)
     }
 
     return{
@@ -77,7 +79,7 @@ module.exports.validateCategoty = (category)=>{
     const errors = []
 
     if(!category || category.trim().length < 2){
-      errors.push("category name is invalid or less than 2 charecters")
+      errors.push(messages.validation.invalidCat)
     }
     
   
