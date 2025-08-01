@@ -28,7 +28,9 @@ const DataTableComponent = ({columns,data,loading})=>{
               <DataTable
                   columns={columns}
                   data={data}
-                
+                  pagination
+
+                  
                 />
           </div>
        )

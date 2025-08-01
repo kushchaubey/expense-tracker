@@ -10,13 +10,13 @@
   font-optical-sizing: auto;
 
 }
-
 .mainContainer{
   
    display: flex;
    margin-top: var(--margin);
    width: 90%;
    max-width: 1200px;
+   height: 100vh;
    justify-self: center;
    background-color: var(--background);
 
@@ -25,7 +25,7 @@
 
 .dark [type="date"]{
         
-         &::-webkit-calendar-picker-indicator {
+  &::-webkit-calendar-picker-indicator {
  filter: invert(1);
   background-color: transparent;
   padding: 4px;
@@ -46,3 +46,38 @@
  }
 
    
+ /* src/assets/css/datatable.scss */
+
+.rdt_Pagination {
+  background-color: var(--background)!important;
+  color: var(--text)!important;
+  border-top: 1px solid var(--primary)!important;
+  padding: 12px;
+}
+
+.rdt_PaginationBtn {
+  background-color: var(--primary)!important;
+  color: var(--text)!important;
+  margin: 0 4px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.rdt_PaginationBtn:hover {
+  background-color: var(--button-hover)!important;
+}
+
+.dlOXOQ {
+   color: var(--button-bg)!important;
+    opacity:1!important;
+    fill: var(--button-bg)!important;
+}
+.dlOXOQ:disabled{
+      
+    color: var(--button-bg)!important;
+    opacity:0.5!important;
+    fill: var(--button-bg)!important;
+
+}

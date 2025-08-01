@@ -1,0 +1,8 @@
+@use "../../../assets/css/variables.scss";
+
+.deleteActions{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}

@@ -7,3 +7,51 @@
 .dividerColour{
     color: var(--primary);
 }
+
+/* For light mode */
+.rdt_Pagination {
+  background-color: #ffffff;
+  color: #333333;
+  border-top: 1px solid #d1d5db;
+  padding: 12px;
+}
+
+.rdt_PaginationBtn {
+  background-color: #e5e7eb;
+  color: #111827;
+  margin: 0 4px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rdt_PaginationBtn:hover {
+  background-color: #d1d5db;
+}
+
+/* Selected button */
+.rdt_PaginationBtn--selected {
+  background-color: #3B82F6;
+  color: white;
+}
+
+/* Dark mode (if your <body> has class `dark`) */
+body.dark .rdt_Pagination {
+  background-color: #111827;
+  color: #f3f4f6;
+  border-top: 1px solid #374151;
+}
+
+body.dark .rdt_PaginationBtn {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+body.dark .rdt_PaginationBtn:hover {
+  background-color: #374151;
+}
+
+body.dark .rdt_PaginationBtn--selected {
+  background-color: #60a5fa;
+  color: #111827;
+}

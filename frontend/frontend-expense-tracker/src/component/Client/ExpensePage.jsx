@@ -9,6 +9,8 @@ import ActionButton from '../utilcomponents/Buttons/ActionButton';
 import ButtonComponent from '../utilcomponents/Buttons/ButtonComponent';
 import PrimaryModel from '../utilcomponents/Models/PrimaryModel';
 import AddUpdateForm from '../utilcomponents/Forms/AddUpdateForm';
+import DeleteExpense from '../utilcomponents/Forms/DeleteExpense';
+
 import { ToastContainer } from 'react-toastify';
 
 const ExpensePage =()=>{
@@ -16,13 +18,32 @@ const ExpensePage =()=>{
      const [expenses, setExpenses]  = useState([]);
      const [loading, setloading]  = useState(true)
      const [modelActive, setmodelActive]  = useState(false)
+     const [formName, setFormName]  = useState('')
+     const [formID, setFormID]  = useState(null)
+     const [itemName, setItemName]  = useState(null)
 
+     const [deleteModel, setDelatemodelActive]  = useState(false)
 
+    function AddExpense(){
+        
+          setFormName('Add');
+          setmodelActive(true);
+          
+
+      }
      function handleEdit(row){
-             console.log(row.id);
+            
+            
+          setFormName('Update');  
+          setFormID(row.id)
+          setmodelActive(true)
+
      }
     function handleDelete(row){
-             console.log(row.id);
+      console.log(row)
+      setFormID(row.id);   
+      setItemName(row.itemName)  
+      setDelatemodelActive(true);
      }
       
 const columns = [
@@ -55,7 +76,7 @@ const columns = [
     name: 'Actions',
     cell: row => (
       <div style={{ display: 'flex', gap: '10px' }}>
-        <ActionButton onClick={() => handleEdit(row)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#3B82F6' }}>
+        <ActionButton onClick={() => handleEdit(row)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#3B82F6' }} >
           <FaEdit />
         </ActionButton>
         <ActionButton onClick={() => handleDelete(row)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'red' }}>
@@ -69,22 +90,23 @@ const columns = [
 ];
 
     useEffect(()=>{
-      getdataBasedOnURL("http://localhost:3000/api/expenses/today",setExpenses,setloading)
+      fetchExpense();
     },[])
 
 
+  function fetchExpense(){
+      getdataBasedOnURL("http://localhost:3000/api/expenses/today",setExpenses,setloading)
+
+  }
 
 
  function  getDatesfromFilter(dates){
        getdataBasedOnURL(`http://localhost:3000/api/expenses/date?start=${dates.startDate}&end=${dates.endDate}`,setExpenses,setloading)
-      }
-
-function AddExpense(){
-  
-     setmodelActive(true)
-    
-
 }
+
+
+
+
     return(
      <>
       <ToastContainer
@@ -105,9 +127,12 @@ function AddExpense(){
             <div className={style.heading}>
                     <h1 >Expense page</h1>
                 <ExpenseDateFilter handleDate={getDatesfromFilter}/>
-                 <ButtonComponent handleClick={AddExpense}>Add Expense</ButtonComponent>
-                  <PrimaryModel setModel={setmodelActive} modelStatus={modelActive}>   <AddUpdateForm formName={'Add Expense'} /></PrimaryModel>
-                <DataTableComponent columns={columns} data={expenses} loading={loading}/>
+                 <ButtonComponent handleClick={AddExpense} >Add Expense</ButtonComponent>
+                  <PrimaryModel setModel={setmodelActive} modelStatus={modelActive}>   <AddUpdateForm formName={formName} id={formID} fetchExpense={fetchExpense} setmodelActive={setmodelActive}/></PrimaryModel>
+                <DataTableComponent columns={columns} data={expenses} loading={loading} />
+
+                   <PrimaryModel setModel={setDelatemodelActive} modelStatus={deleteModel}>  <DeleteExpense formID={formID} expensesName={itemName} fetchExpense={fetchExpense} dataURL={'http://localhost:3000/api/expenses/delete/'} setmodelActive={setDelatemodelActive}/> </PrimaryModel>
+
             </div>
         </div>
 

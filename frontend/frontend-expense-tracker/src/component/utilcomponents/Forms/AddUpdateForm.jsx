@@ -5,7 +5,7 @@ import { formValidation } from '../../../Utils/formValidation';
 import {getdataBasedOnURL} from '../../../Utils/FetchingUtil'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-const AddUpdateForm = ({ formName }) => {
+const AddUpdateForm = ({ formName ,id,fetchExpense,setmodelActive}) => {
 
 
   const [formData, setFormData] = useState({
@@ -31,25 +31,63 @@ const AddUpdateForm = ({ formName }) => {
   })
 
 
+ 
 
-  useEffect(()=>{
+  useEffect( ()=> {
             
     let newDate = new Date();
    let todaysDate = newDate.toISOString().split('T')[0];
+    getdataBasedOnURL("http://localhost:3000/api/categories",setCategories,setloading);
+     getdataBasedOnURL("http://localhost:3000/api/users",setUsers,setloading)
+    if(formName=='Add'){
+     
 
-     getdataBasedOnURL("http://localhost:3000/api/categories",setCategories,setloading);
+  setFormData({
+    itemName: '',
+    cost: '',
+    category: '',
+    user: '',
+    date: ''
+  })
+
+    
+
      setFormData((prev) => ({
       ...prev,
       date: todaysDate,
     }))
-  },[]);
+    }
+    else if(formName=='Update'){
 
-   useEffect(()=>{
-            
-     getdataBasedOnURL("http://localhost:3000/api/users",setUsers,setloading)
+
+    
+       getExpenseById();
+ 
+
+    }
+  },[formName,id]);
+
+
    
-      
-  },[]);
+
+
+   const getExpenseById =  ()=>{
+
+    axios.get(`http://localhost:3000/api/expenses/${id}`)
+    .then((res) => {
+         
+       if(res.data.statusText=="success"){
+      setFormData(res.data.data); // ✔️ works if your API response format is { data: { ... } }
+     /// console.log(formData);
+      setloading(false)
+       }
+    })
+    .catch((err) => {
+      console.error('Error fetching data:', err); // more descriptive
+      setFormData([]); // optional: clear state on error
+    });
+
+   }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -114,10 +152,11 @@ const AddUpdateForm = ({ formName }) => {
     setErrors(newError);
 
      //setErrors(newError); // update UI with errors
-console.log(newError);
   const hasError = Object.values(newError).some(error => error !== '');
   if (!hasError) {
     
+  
+    if(formName=="Add"){
 
  axios.post('http://localhost:3000/api/expenses', formData)
   .then(function (response) {
@@ -126,6 +165,8 @@ console.log(newError);
        toast.success(response.data.message)
     }
   
+    fetchExpense();
+    setmodelActive(false);
     setFormData({
     itemName: '',
     cost: '',
@@ -137,12 +178,39 @@ console.log(newError);
     toast.error("Something went wrong!")
   });
    
+}else{
    
+
+  const updateData = {
+    ...formData,
+   user: formData.user.id,
+  category: formData.category.id
+
+
+  };
+  
+ 
+
+  console.log(updateData)
+  axios.put(`http://localhost:3000/api/expenses/update/${formData.id}`,updateData)
+  .then(function (response) {
+  
+    if(response.data.statusText=="success"){
+       toast.success(response.data.message)
+    }
+    fetchExpense();
+    setmodelActive(false);
+  }).catch(function () {
+    toast.error("Something went wrong!")
+  });
+
+}
   } else {
        toast.error("Validation failed")
 
   }
 };
+
 
   
 
@@ -151,14 +219,15 @@ console.log(newError);
       <h1>loading</h1>
    )
   }
-  if(users.length == 0 || categories.length == 0){
+  
+  if(formName==="Add" && (users.length == 0 || categories.length == 0)){
    return(
       <h1>No category or user found</h1> 
    )
   }
   return (
     <div className={style.formConatainer}>
-      <h3>{formName}</h3>
+      <h3>{formName} Expense</h3>
       <form onSubmit={handleSubmit}>
 
         <div className={style.formGroup}>
@@ -175,27 +244,57 @@ console.log(newError);
 
         <div className={style.formGroup}>
           <label htmlFor="categories">Category</label>
-          <select id="categories" name="category" value={formData.category} onChange={handleChange}>
-            <option value="">Select</option>
-            {categories.map((data)=>{
-               return <option value={data.id} key={data.id}>{data.categoryName}</option>
+      {formName==='Add'? (<select id="categories" name="category" value={formData.category} onChange={handleChange}>
+
+            <option value="">Select</option>)
+              {categories.map((data)=>{
+                if(data.id !== formData.category.id){
+  
+                  return <option value={data.id} key={data.id}>{data.categoryName}</option>
+
+                }
             })}
             
-          </select>
+          </select>):(
+
+<select id="categories" name="category" value={formData.category} onChange={handleChange}>
+
+            <option value={formData.category.id}>{formData.category.categoryName}</option>)
+              { categories.filter((cat) => cat.id !== formData.category?.id).map((data)=>{
+              
+          
+                  return <option value={data.id} key={data.id}>{data.categoryName}</option>
+
+                
+            })}
+            
+          </select>)}
+
+          
           <div className={style.error}>{errors.category}</div>
         </div>
 
         <div className={style.formGroup}>
           <label htmlFor="users">User</label>
-          <select id="users" name="user" value={formData.user} onChange={handleChange}>
+         {formName==='Add'? (<select id="users" name="user" value={formData.user} onChange={handleChange}>
             <option value="">Select</option>
-            
              {users.map((data)=>{
                return <option value={data.id} key={data.id}>{data.userName}</option>
             })}
          
             
-          </select>
+          </select>):
+            
+            (
+            <select id="users" name="user" value={formData.user} onChange={handleChange}>
+                  <option value={formData.user.id}>{formData.user.userName}</option>
+                  {
+                  
+                  users.filter((usr)=>usr.id!==formData.user.id).map((data)=>{
+                    return <option value={data.id} key={data.id}>{data.userName}</option>
+                  })}
+              
+          </select>)}
           <div className={style.error}>{errors.user}</div>
         </div>
 
@@ -206,7 +305,7 @@ console.log(newError);
         </div>
 
         <div className={style.formGroup}>
-          <ButtonComponent>{formName}</ButtonComponent>
+          <ButtonComponent>{formName} Expense</ButtonComponent>
         </div>
 
       </form>

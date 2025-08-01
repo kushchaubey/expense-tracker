@@ -15,6 +15,7 @@
     align-self: flex-start;
     border: transparent;
     cursor: pointer;
+    justify-content: center;
 
      &:hover{
          background-color: var(--button-hover);
