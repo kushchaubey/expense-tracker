@@ -1,19 +1,18 @@
-import style from './ExpensePage.module.scss'
+import style from './Mainpage.module.scss'
 
 import ExpenseDateFilter from '../utilcomponents/ExpenseDateFilter';
 import DataTableComponent from '../utilcomponents/DataTableComponent';
 import { useEffect, useState } from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa'; // for icons
 import {getdataBasedOnURL} from '../../Utils/FetchingUtil';
-import ActionButton from '../utilcomponents/Buttons/ActionButton';
 import ButtonComponent from '../utilcomponents/Buttons/ButtonComponent';
 import PrimaryModel from '../utilcomponents/Models/PrimaryModel';
 import AddUpdateForm from '../utilcomponents/Forms/AddUpdateForm';
 import DeleteExpense from '../utilcomponents/Forms/DeleteExpense';
-
+import { FaEdit, FaTrash } from 'react-icons/fa'; // for icons
+import ActionButton from '../utilcomponents/Buttons/ActionButton';
 import { ToastContainer } from 'react-toastify';
 
-const ExpensePage =()=>{
+const ExpensePage =({dataURL,pageName,dataURLDate, columns})=>{
 
      const [expenses, setExpenses]  = useState([]);
      const [loading, setloading]  = useState(true)
@@ -24,55 +23,7 @@ const ExpensePage =()=>{
 
      const [deleteModel, setDelatemodelActive]  = useState(false)
 
-    function AddExpense(){
-        
-          setFormName('Add');
-          setmodelActive(true);
-          
-
-      }
-     function handleEdit(row){
-            
-            
-          setFormName('Update');  
-          setFormID(row.id)
-          setmodelActive(true)
-
-     }
-    function handleDelete(row){
-      console.log(row)
-      setFormID(row.id);   
-      setItemName(row.itemName)  
-      setDelatemodelActive(true);
-     }
-      
-const columns = [
-	{
-		name: 'Title',
-		selector: row => row.itemName,
-		sortable: true,
-	},
-    {
-		name: 'Cost',
-		selector: row => row.cost,
-		sortable: true,
-	},
-    {
-		name: 'Category',
-		selector: row => row['category.categoryName'],
-		sortable: true,
-	},
-       {
-		name: 'User',
-		selector: row => row['user.userName'],
-		sortable: true,
-	},
-	{
-		name: 'Date',
-		selector: row => row.onlyDate,
-		sortable: true,
-	},
-    {
+     const actionButtons =  {
     name: 'Actions',
     cell: row => (
       <div style={{ display: 'flex', gap: '10px' }}>
@@ -87,15 +38,41 @@ const columns = [
     ignoreRowClick: true,
    // button: true,
   }
-];
+
+
+const columnsWithActions = [...columns, actionButtons];
+
+    function AddExpense(){
+        
+          setFormName('Add');
+          setmodelActive(true);
+          
+
+      }
+
+     function handleEdit(row){
+            
+            
+          setFormName('Update');  
+          setFormID(row.id)
+          setmodelActive(true)
+
+     }
+    function handleDelete(row){
+      const name = row.itemName || row.userName || row.categoryName
+      console.log(row)
+      setFormID(row.id);   
+      setItemName(name)  
+      setDelatemodelActive(true);
+     }
 
     useEffect(()=>{
       fetchExpense();
-    },[])
+    },[expenses])
 
 
   function fetchExpense(){
-      getdataBasedOnURL("http://localhost:3000/api/expenses/today",setExpenses,setloading)
+      getdataBasedOnURL(dataURL,setExpenses,setloading)
 
   }
 
@@ -125,11 +102,11 @@ const columns = [
 
         <div className='mainContainer'>
             <div className={style.heading}>
-                    <h1 >Expense page</h1>
-                <ExpenseDateFilter handleDate={getDatesfromFilter}/>
-                 <ButtonComponent handleClick={AddExpense} >Add Expense</ButtonComponent>
+                    <h1 >{pageName}</h1>
+                {pageName=="Expense Page" && <ExpenseDateFilter handleDate={getDatesfromFilter}/>}
+                 <ButtonComponent handleClick={AddExpense} >Add {pageName.split(" ")[0]}</ButtonComponent>
                   <PrimaryModel setModel={setmodelActive} modelStatus={modelActive}>   <AddUpdateForm formName={formName} id={formID} fetchExpense={fetchExpense} setmodelActive={setmodelActive}/></PrimaryModel>
-                <DataTableComponent columns={columns} data={expenses} loading={loading} />
+                <DataTableComponent columns={columnsWithActions} data={expenses} loading={loading} />
 
                    <PrimaryModel setModel={setDelatemodelActive} modelStatus={deleteModel}>  <DeleteExpense formID={formID} expensesName={itemName} fetchExpense={fetchExpense} dataURL={'http://localhost:3000/api/expenses/delete/'} setmodelActive={setDelatemodelActive}/> </PrimaryModel>
 

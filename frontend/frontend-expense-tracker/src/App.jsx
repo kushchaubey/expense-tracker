@@ -3,8 +3,58 @@ import { useState } from 'react'
 import './App.css'
 
 import ClientLayout from './component/Client/ClientLayout.JSX'
-import ExpensePage from './component/Client/ExpensePage';
+import MainPage from './component/Client/MainPage';
+
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+
+const Expense = [
+	{
+		name: 'Title',
+		selector: row => row.itemName,
+		sortable: true,
+	},
+    {
+		name: 'Cost',
+		selector: row => row.cost,
+		sortable: true,
+	},
+    {
+		name: 'Category',
+		selector: row => row['category.categoryName'],
+		sortable: true,
+	},
+       {
+		name: 'User',
+		selector: row => row['user.userName'],
+		sortable: true,
+	},
+	{
+		name: 'Date',
+		selector: row => row.onlyDate,
+		sortable: true,
+	},
+   
+];
+const users = [
+	{
+		name: 'User',
+		selector: row => row.userName,
+		sortable: true,
+	}
+    
+   
+];
+const category = [
+	{
+		name: 'category',
+		selector: row => row.categoryName,
+		sortable: true,
+	}
+    
+   
+];
 
 function App() {
   const [switchModeClass, setSwitchModeClass] =  useState('');
@@ -29,16 +79,27 @@ const router = createBrowserRouter([
 
       {
          path:"/",
-         element:<ExpensePage/>
+         element:<MainPage pageName="Expense Page" dataURL="http://localhost:3000/api/expenses/today" columns={Expense}/>
       },
          
       {
-         path:"/add-expense",
-         element:<h1>Add expense page</h1>
+         path:"/users",
+         element:<MainPage pageName="Users Page" dataURL="http://localhost:3000/api/users" columns={users}/>
+      },
+
+
+      {
+         path:"/categories",
+         element:<MainPage pageName="Categories Page" dataURL="http://localhost:3000/api/categories" columns={category}/>
+      },
+
+        {
+         path:"/analytics",
+         element:<h1>Analytics page</h1>
       }
+       
 
     
-      
       
       
       ]
