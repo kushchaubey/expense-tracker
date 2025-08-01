@@ -2,13 +2,14 @@
 const messages = require("../Utils/Messages");
 
 const validateExpenseFormData = (data) => {
+  console.log(data)
   const errors = [];
 
   if (!data.itemName || data.itemName.trim().length < 2) {
     errors.push(messages.validation.invalidName);
   }
 
-  if (!data.category || typeof data.category !== "string") {
+  if (!data.category) {
     errors.push(messages.validation.invalidCat);
   }
 
@@ -19,6 +20,7 @@ const validateExpenseFormData = (data) => {
   if (data.date && isNaN(Date.parse(data.date))) {
     errors.push(messages.validation.invalidDate);
   }
+  console.log(errors)
 
   return {
 

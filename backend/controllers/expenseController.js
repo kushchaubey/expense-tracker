@@ -197,10 +197,11 @@ exports.AddExpense = (req, res, next) => {
 
 exports.updateExpense = (req,res,next)=>{
 
-   
    let existingUserOBJ;
 
     const { itemName, cost, category, date, user } = req.body;
+    console.log("Received body:", req.body);
+
 
     userModel.findByPk(user)
         .then((existingUser) => {
@@ -228,7 +229,7 @@ exports.updateExpense = (req,res,next)=>{
             });
         })
         .then((result) => {
-            if (!result) {
+            if (result[0] === 0) {
         return sendResponse(res, 400, messages.statusText.fail, messages.expense.notUpdated, null);
             }
 
