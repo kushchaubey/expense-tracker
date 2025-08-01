@@ -82,15 +82,10 @@ const router = createBrowserRouter([
          element:<MainPage pageName="Expense Page" dataURL="http://localhost:3000/api/expenses/today" columns={Expense}/>
       },
          
-      {
-         path:"/users",
-         element:<MainPage pageName="Users Page" dataURL="http://localhost:3000/api/users" columns={users}/>
-      },
-
 
       {
          path:"/categories",
-         element:<MainPage pageName="Categories Page" dataURL="http://localhost:3000/api/categories" columns={category}/>
+         element:<MainPage pageName="Categories Page" dataURL="http://localhost:3000/api/categories" columns={category} formType="category" updateURL='http://localhost:3000/api/categories/'/>
       },
 
         {

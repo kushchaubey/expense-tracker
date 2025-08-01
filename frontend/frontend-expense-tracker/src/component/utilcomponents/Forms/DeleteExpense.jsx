@@ -8,6 +8,7 @@ const DeleteExpense = ({formID, expensesName,dataURL,setmodelActive,fetchExpense
 
     
     function handleDelete(){
+      console.log(dataURL+formID)
           axios.delete(dataURL+formID)
           .then((result)=>{
             if(result.data.statusText=="success"){

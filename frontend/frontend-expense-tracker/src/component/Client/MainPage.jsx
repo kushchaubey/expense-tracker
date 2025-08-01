@@ -11,8 +11,8 @@ import DeleteExpense from '../utilcomponents/Forms/DeleteExpense';
 import { FaEdit, FaTrash } from 'react-icons/fa'; // for icons
 import ActionButton from '../utilcomponents/Buttons/ActionButton';
 import { ToastContainer } from 'react-toastify';
-
-const ExpensePage =({dataURL,pageName,dataURLDate, columns})=>{
+import OneFieldForm from './../utilcomponents/Forms/OneFieldForm';
+const ExpensePage =({dataURL,pageName,updateURL,columns,formType})=>{
 
      const [expenses, setExpenses]  = useState([]);
      const [loading, setloading]  = useState(true)
@@ -50,12 +50,23 @@ const columnsWithActions = [...columns, actionButtons];
 
       }
 
+      // -------------------------------
+// Update ExpensePage.jsx below
+
+
+// Add this useEffect at the bottom of ExpensePage.jsx:
+useEffect(() => {
+  if (formName === 'Update' && formID) {
+    setmodelActive(true);
+  }
+}, [formID]);
+
      function handleEdit(row){
             
             
           setFormName('Update');  
           setFormID(row.id)
-          setmodelActive(true)
+       
 
      }
     function handleDelete(row){
@@ -68,7 +79,7 @@ const columnsWithActions = [...columns, actionButtons];
 
     useEffect(()=>{
       fetchExpense();
-    },[expenses])
+    },[dataURL])
 
 
   function fetchExpense(){
@@ -105,10 +116,20 @@ const columnsWithActions = [...columns, actionButtons];
                     <h1 >{pageName}</h1>
                 {pageName=="Expense Page" && <ExpenseDateFilter handleDate={getDatesfromFilter}/>}
                  <ButtonComponent handleClick={AddExpense} >Add {pageName.split(" ")[0]}</ButtonComponent>
-                  <PrimaryModel setModel={setmodelActive} modelStatus={modelActive}>   <AddUpdateForm formName={formName} id={formID} fetchExpense={fetchExpense} setmodelActive={setmodelActive}/></PrimaryModel>
+                  <PrimaryModel setModel={setmodelActive} modelStatus={modelActive}>  {pageName==="Expense Page"? <AddUpdateForm formName={formName} id={formID} fetchExpense={fetchExpense} setmodelActive={setmodelActive} />:
+                   <OneFieldForm
+    formName={formName}               // 'Add' or 'Update'
+    formType={formType}              // or "user"
+    dataURL={dataURL}
+    updateURL={updateURL}
+    id={formID}                      // only needed for Update
+    fetchData={fetchExpense}      // optional: to refresh after update
+    setmodelActive={setmodelActive}  // to close modal
+  />
+                  }</PrimaryModel>
                 <DataTableComponent columns={columnsWithActions} data={expenses} loading={loading} />
 
-                   <PrimaryModel setModel={setDelatemodelActive} modelStatus={deleteModel}>  <DeleteExpense formID={formID} expensesName={itemName} fetchExpense={fetchExpense} dataURL={'http://localhost:3000/api/expenses/delete/'} setmodelActive={setDelatemodelActive}/> </PrimaryModel>
+                   <PrimaryModel setModel={setDelatemodelActive} modelStatus={deleteModel}>  <DeleteExpense formID={formID} expensesName={itemName} fetchExpense={fetchExpense} dataURL={pageName==="Expense Page"?'http://localhost:3000/api/expenses/delete/':'http://localhost:3000/api/categories/'} setmodelActive={setDelatemodelActive}/> </PrimaryModel>
 
             </div>
         </div>
